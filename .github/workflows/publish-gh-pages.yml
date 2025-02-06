@@ -46,10 +46,17 @@ jobs:
       run: |
         dotnet publish src/BlazorApp -c Release -o published
 
-    - name: List published files (debug)
+    # List contents of the published directory
+    - name: List contents of published directory
       shell: bash
       run: |
-        ls -R published/wwwroot  # Verify that files are being published
+        ls -R published  # List all files in the published directory
+
+    # List contents of the 'published/wwwroot' directory
+    - name: List contents of published/wwwroot
+      shell: bash
+      run: |
+        ls -R published/wwwroot  # List files in the wwwroot folder
 
     - name: Upload artifact for web
       uses: actions/upload-artifact@v4
