@@ -1,6 +1,6 @@
 name: Publish Blazor App to GitHub Pages
 
-on: [ push, workflow_dispatch ]
+on: [push, workflow_dispatch]
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
@@ -33,7 +33,6 @@ jobs:
     #   run: |
     #     $filepath = "./src/BlazorApp/wwwroot/index.html"
     #     $repository = "${{ github.repository }}" -replace "${{ github.repository_owner }}", ""
-
     #     $html = Get-Content -Path $filepath
     #     $html -replace "<base href=`"/`" />", "<base href=`"$repository/`" />" | Out-File -Path $filepath -Force
 
@@ -42,7 +41,6 @@ jobs:
     #   run: |
     #     $filepath = "./src/BlazorApp/wwwroot/sample-data"
     #     $repository = "${{ github.repository }}" -replace "${{ github.repository_owner }}", ""
-
     #     Get-ChildItem -Path $filepath -Filter "*.json" | ForEach-Object {
     #       $json = Get-Content -Path $_.FullName
     #       $json.Replace("../", "$repository/") | Out-File -Path $_.FullName -Force
@@ -69,9 +67,10 @@ jobs:
         dotnet publish src/BlazorApp -c Release -o published
 
     - name: Upload artifact for web
-      uses: actions/upload-artifact@v4   # <-- Updated to v2
+      uses: actions/upload-artifact@v4  # <-- Keep using v4 as you have it, this is the correct version.
       with:
-        path: published/wwwroot
+        name: blazor-app-artifact  # <-- Use a unique name for the artifact
+        path: published/wwwroot  # <-- Ensure you are uploading the correct folder
 
   deploy:
     name: Deploy App to GitHub Pages
@@ -88,3 +87,5 @@ jobs:
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v1
+      with:
+        artifact_name: blazor-app-artifact  # <-- Use the same artifact name here
